@@ -5,14 +5,15 @@ import Title from '../components/Title';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {Link} from 'react-router-dom'; 
+import axios from 'axios';
 
 const getUnique = (items, value) => {
     return [...new Set(items.map(item => item[value]))]
 }
 
 
-
 export default function RoomFilter({rooms}) {
+
     const context = useContext(RoomContext);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -29,7 +30,18 @@ export default function RoomFilter({rooms}) {
     let people = getUnique(rooms, 'capacity');
     people = people.map((item, index) => {
         return <option key={index} value={item}>{item}</option>
-    })
+    });
+
+    function handleSubmit() {
+        axios.get('http://localhost:44336/api/room')
+        .then(response => {
+            console.log(response)
+            this.setState({posts: response.data})
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
     return (
         <section className="filter-container">
             <Title title="search rooms" />
@@ -86,9 +98,12 @@ export default function RoomFilter({rooms}) {
                   {/*end of extras */}
 
                   {/* start submit button*/}
-                  <Link to='/booking' className="btn-primary">
+                  {/* <Link to='/booking' className="btn-primary">
                         submit                
-                  </Link>  
+                  </Link>   */}
+                  <button type="button" className="btn-primary" onClick={handleSubmit}>
+                    Submit
+                  </button>
 
                   {/* end submit button*/}
             </form>
