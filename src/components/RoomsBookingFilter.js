@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {Link} from 'react-router-dom'; 
 import axios from 'axios';
+import RoomModal from '../components/RoomModal';
 
 const getUnique = (items, value) => {
     return [...new Set(items.map(item => item[value]))]
@@ -17,20 +18,21 @@ export default function RoomFilter({rooms}) {
     const context = useContext(RoomContext);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [roomTypes, setRoomTypes] = useState([{}]);
+    const [selectedRoomType, setSelectedRoomType] = useState({});
     const {
-        handleChange, type, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets
+        handleChange, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets
     } = context;
-    let types = getUnique(rooms, 'type');
-    types = ['all', ...types];
-    types = types.map((item, index) => {
-        return (
-            <option value={item} ky={index}>{item}</option>
-        );
-    });
+
+    loadRoomTypes();
     let people = getUnique(rooms, 'capacity');
     people = people.map((item, index) => {
         return <option key={index} value={item}>{item}</option>
     });
+
+    function loadRoomTypes() {
+        axios.get('https://localhost:44336/api/roomtype/').then(response => setRoomTypes(response.data));
+    }
 
     function handleSubmit() {
         axios.get('http://localhost:44336/api/room')
@@ -67,8 +69,11 @@ export default function RoomFilter({rooms}) {
                   {/* start select day */}
                 <div className="form-group">
                     <label htmlFor="type">room type</label>
-                    <select name="type" id="type" value={type} className="form-control" onChange={handleChange}>
-                        {types}
+                    <select name="type" id="type" className="form-control" onChange={(e) => setSelectedRoomType(e.target.value)}>
+                        <option>All</option>
+                        {roomTypes.map(i => {
+                            return <option value={i}>{i.Name}</option>;
+                        })}
                     </select>
                 </div>
                  {/* end select day */}
@@ -96,16 +101,7 @@ export default function RoomFilter({rooms}) {
                   </div>
 
                   {/*end of extras */}
-
-                  {/* start submit button*/}
-                  {/* <Link to='/booking' className="btn-primary">
-                        submit                
-                  </Link>   */}
-                  <button type="button" className="btn-primary" onClick={handleSubmit}>
-                    Submit
-                  </button>
-
-                  {/* end submit button*/}
+                  <RoomModal price={selectedRoomType.Price} />
             </form>
         </section>
     )
