@@ -4,13 +4,13 @@ import { withRoomConsumer } from '../context';
 import Loading from './Loading';
 
 function BookingContainer({context}) {
-    const { loading, rooms } = context;
+    const { loading, rooms, roomTypes } = context;
     if (loading) {
         return <Loading />;
     }
     return ( 
         <div>
-            <RoomsBookingFilter rooms = {rooms} />
+            <RoomsBookingFilter rooms = {rooms} roomTypes={roomTypes} />
         </div>
     );
 
