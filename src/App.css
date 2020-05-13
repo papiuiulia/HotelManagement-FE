@@ -631,19 +631,18 @@ h6 {
     padding-bottom: 10px;
 }
 
-.modal-title{
+.modal-title {
     color: #000 !important;
     font-size: 2rem;
     letter-spacing: var(--mainSpacing);
     text-transform: capitalize;
-    margin-bottom: 1rem;
     text-align: center;
     margin-bottom: 20px;
 }
 
 .modal-subtitle {
     color: black;
-    padding: 10px 0px 15px 10px;;
+    padding: 10px 0 15px 10px;;
 }
 
 .section {

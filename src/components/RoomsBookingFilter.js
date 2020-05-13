@@ -18,11 +18,9 @@ export default function RoomFilter({rooms}) {
     const [breakfast, setBreakfast] = useState('');
     const [pets, setPets] = useState('');
     const [numberOfGuests, setNumberOfGuests] = useState("1");
-    
-
     const [isFormValid, setIsFormValid] = useState(false);
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    let validationInformation = <p style={{color: "red"}}>Please select a room type</p>;
+
+    let validationInformation = !isFormValid ? <p style={{color: "red"}}>Please select a room type</p> : '';
 
     let people;
     loadRoomTypes();
@@ -54,14 +52,14 @@ export default function RoomFilter({rooms}) {
                 <div className="form-group">
                     <label htmlFor="type">check in</label>
                     <DatePicker selected={startDate} onChange={date => setStartDate(date)} dateFormat='dd/MM/yyyy'
-                                filterDate={date => date.getDay() != 6 && date.getDay() != 0} isClearable
+                                filterDate={date => date.getDay() !== 6 && date.getDay() !== 0} isClearable
                                 placeholderText="Choose a date!" className="datepicker-input"/>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="type">check out</label>
                     <DatePicker selected={endDate} onChange={date => setEndDate(date)} dateFormat='dd/MM/yyyy'
-                                filterDate={date => date.getDay() != 6 && date.getDay() != 0} isClearable
+                                filterDate={date => date.getDay() !== 6 && date.getDay() !== 0} isClearable
                                 placeholderText="Choose a date!" className="datepicker-input"/>
                 </div>
 
@@ -73,6 +71,7 @@ export default function RoomFilter({rooms}) {
                             return <option value={i.ID}>{i.Name}</option>;
                         })}
                     </select>
+                    {validationInformation}
                 </div>
 
                 <div className="form-group">
@@ -98,7 +97,7 @@ export default function RoomFilter({rooms}) {
 
                   <RoomModal checkIn={startDate} checkOut={endDate} price={findRoomTypeByID(selectedRoomTypeID).Price}
                              roomTypeName={findRoomTypeByID(selectedRoomTypeID).Name} numberOfGuests={numberOfGuests}
-                             breakfast={breakfast} pets={pets} isFormValid={isFormValid} isFormSubmitted={isFormSubmitted}/>
+                             breakfast={breakfast} pets={pets} isFormValid={isFormValid} />
             </form>
         </section>
     )

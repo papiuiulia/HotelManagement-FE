@@ -15,29 +15,6 @@ function RoomContainer({context}) {
             <RoomsList rooms = {sortedRooms} />
         </div>
     );
-
 }
 
 export default withRoomConsumer(RoomContainer);
-
-// export default function RoomsContainer() {
-//     return (
-//         <RoomConsumer>
-//             {
-//                 (value) => {
-//                     const {loading, sortedRooms, rooms} = value;
-//                     if (loading) {
-//                         return <Loading />;
-//                     }
-//                     return ( 
-//                         <div>
-//                             Hello from Rooms Container
-//                             <RoomsFilter rooms = {rooms} />
-//                             <RoomsList rooms = {sortedRooms} />
-//                         </div>
-//                     );
-//                 }
-//             }
-//         </RoomConsumer>       
-//     );
-// }

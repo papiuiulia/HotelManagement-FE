@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import items from './data';
 
 const RoomContext = React.createContext();
-// <RoomContext.Provider value={'hello'} 
 
 class RoomProvider extends Component {
     state = {
@@ -21,7 +20,6 @@ class RoomProvider extends Component {
         pets: false,
         roomTypes: []
     };
-    //getData
 
     componentDidMount() {
         let rooms = this.formatData(items);

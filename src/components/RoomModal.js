@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
 const customStyles = {
@@ -35,7 +36,6 @@ export default function RoomModal({checkIn, checkOut, price, roomTypeName, numbe
   }
  
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = '#f00';
   }
  
@@ -45,14 +45,15 @@ export default function RoomModal({checkIn, checkOut, price, roomTypeName, numbe
 
   function createReservation() {
     axios.post('https://localhost:44336/api/reservation/', {
-      DateCreation: "20-01-2020",
-      CheckIn: "20-01-2020",
-      CheckOut: "20-01-2020",
-      NumberOfAdults: 2,
-      NumberOfChildren: 3,
-      Meal: true,
-      ReservationTypeID: "0856B808-C2E4-B5F3-7AF6-035E096B238A",
-      GuestID: "F22F1530-A563-30E9-F475-32E75369D4A0",
+      ID: uuidv4(),
+      DateCreation: moment(new Date()).format('YYYY-MM-DD'),
+      CheckIn: moment(checkIn).format('YYYY-MM-DD'),
+      CheckOut: moment(checkOut).format('YYYY-MM-DD'),
+      NumberOfAdults: numberOfGuests,
+      NumberOfChildren: 2,
+      Meal: !!breakfast,
+      ReservationTypeID: "1AB4F8C3-3F8D-2ABF-10E7-B24BE5F781AA",
+      GuestID: "DAC965EB-893D-94D3-136F-73EC397EF190",
       RoomID: "92253C67-3FE9-B5A3-1815-06370B145B62"
     });
   }
@@ -64,7 +65,6 @@ export default function RoomModal({checkIn, checkOut, price, roomTypeName, numbe
             isOpen={modalIsOpen}
             onAfterOpen={afterOpenModal}
             onRequestClose={closeModal}
-            style={customStyles}
             contentLabel="Modal"
             ariaHideApp={false}
             style={customStyles}
@@ -82,7 +82,6 @@ export default function RoomModal({checkIn, checkOut, price, roomTypeName, numbe
               <p className="modal-element">Guests: {numberOfGuests}</p>
               <p className="modal-element">{breakfastInformation}</p>
               <p className="modal-element">{petsInformation}</p>
-              {/* <button className="btn-primary center-button">Submit</button> */}
               <Link to = '/reservation' className='btn-primary center-button' onClick={createReservation}>
                         Submit
               </Link>
